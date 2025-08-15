@@ -1,0 +1,44 @@
+<template>
+
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_1-of-5"><span>
+      
+         <lightning-combobox
+            name="progress"
+            label="Status"
+            value=""
+            placeholder="Select Progress"
+            options={options}
+            onchange={handleChange}
+            required>
+        </lightning-combobox>
+
+        </span></div>
+
+        <div class="slds-col slds-size_1-of-5"><span>
+            <lightning-combobox
+            name="progress"
+            label="Status"
+            value=""
+            placeholder="Select Progress"
+            options={options}
+            onchange={handleChange}
+            required>
+        </lightning-combobox>
+
+        </span></div>
+
+        <div class="slds-col slds-size_1-of-5"><span></span></div>
+        
+        <div class="slds-col slds-size_1-of-5"><span>    
+            <lightning-button variant="destructive-text" label="Destructive Text" title="Destructive action with a lighter look" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        </span></div>
+
+        <div class="slds-col slds-size_1-of-5"><span>
+            <lightning-button variant="brand" label="Brand" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+
+        </span></div>
+        </div>
+    
+    
+</template>
