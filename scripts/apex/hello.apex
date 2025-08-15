@@ -8,3 +8,5 @@
 string tempvar = 'Enter_your_name_here';
 System.debug('Hello World!');
 System.debug('My name is ' + tempvar);
+Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+System.debug('333333 gd 333333 ' + gd);

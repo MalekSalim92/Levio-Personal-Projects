@@ -21,6 +21,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# scripts
+**/vscode/settings.json
+**/scripts/apex/hello.apex
+**/scripts/soql/account.soql
+
 # Dependency directories
 node_modules/
 
