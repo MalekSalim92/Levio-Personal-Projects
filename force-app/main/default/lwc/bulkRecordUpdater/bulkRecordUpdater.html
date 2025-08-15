@@ -1,44 +1,49 @@
 <template>
+    <template lwc:if={isLoading}>
+        <div class="spinner-container">
+            <lightning-spinner alternative-text="Loading" size="xx-small"></lightning-spinner>
+        </div>
+        </template>
 
-    <div class="slds-grid slds-gutters">
-        <div class="slds-col slds-size_1-of-5"><span>
-      
-         <lightning-combobox
-            name="Object"
-            label="Object"
-            value=""
-            placeholder="Select an Object"
-            options={salesforceObjectOptions}
-            onchange={handleChangeObject}
-            required>
-        </lightning-combobox>
-
+    <template lwc:else>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-5"><span>
+                <lightning-combobox
+                name="Object"
+                label="Object"
+                value={selectedObject}
+                placeholder="Select an Object"
+                options={salesforceObjectOptions}
+                onchange={handleChangeObject}
+                required>
+            </lightning-combobox>
         </span></div>
-
+    
         <div class="slds-col slds-size_1-of-5"><span>
             <lightning-combobox
-            name="progress"
-            label="Status"
+            name="Fields"
+            label="Fields"
             value=""
-            placeholder="Select Progress"
-            options={salesforceObjectOptions.QualifiedApiName}
-            onchange={handleChange}
+            placeholder="Select Fields"
+            options={objectFieldsOptions}
+            onchange={handleSelectFields}
             required>
         </lightning-combobox>
-
-        </span></div>
-
-        <div class="slds-col slds-size_1-of-5"><span></span></div>
         
-        <div class="slds-col slds-size_1-of-5"><span>    
-            <lightning-button variant="destructive-text" label="Clear" title="Clear Action to remove selections" onclick={handleClear} class="slds-m-left_x-small"></lightning-button>
-        </span></div>
-
-        <div class="slds-col slds-size_1-of-5"><span>
-            <lightning-button variant="brand" label="Update" title="Update records" onclick={handleUpdate} class="slds-m-left_x-small"></lightning-button>
-
-        </span></div>
-        </div>
+    </span></div>
     
+    <div class="slds-col slds-size_1-of-5"><span></span></div>
+    
+    <div class="slds-col slds-size_1-of-5"><span>    
+        <lightning-button variant="destructive-text" label="Clear" title="Clear Action to remove selections" onclick={handleClear} class="slds-m-left_x-small"></lightning-button>
+    </span></div>
+    
+    <div class="slds-col slds-size_1-of-5"><span>
+        <lightning-button variant="brand" label="Update" title="Update records" onclick={handleUpdate} class="slds-m-left_x-small"></lightning-button>
+        
+    </span></div>
+</div>
+
+</template>
     
 </template>
