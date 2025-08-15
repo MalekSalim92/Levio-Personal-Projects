@@ -10,6 +10,10 @@ export default class BulkRecordUpdater extends LightningElement {
     selectedField
     error 
     isLoading = true
+ 
+    get isUpdateDisabled(){
+        return !this.selectedObject || !this.selectedField
+    }
     @wire(getAllSalesforceObjects)
     wiredObject({data,error}){
         if(data){
@@ -56,5 +60,10 @@ export default class BulkRecordUpdater extends LightningElement {
             this.isLoading = false
         }
 
+    }
+
+    handleClear(){
+        this.selectedObject = null;
+        this.selectedField = null
     }
 }
