@@ -4,12 +4,12 @@
         <div class="slds-col slds-size_1-of-5"><span>
       
          <lightning-combobox
-            name="progress"
-            label="Status"
+            name="Object"
+            label="Object"
             value=""
-            placeholder="Select Progress"
-            options={options}
-            onchange={handleChange}
+            placeholder="Select an Object"
+            options={salesforceObjectOptions}
+            onchange={handleChangeObject}
             required>
         </lightning-combobox>
 
@@ -21,7 +21,7 @@
             label="Status"
             value=""
             placeholder="Select Progress"
-            options={options}
+            options={salesforceObjectOptions.QualifiedApiName}
             onchange={handleChange}
             required>
         </lightning-combobox>
@@ -31,11 +31,11 @@
         <div class="slds-col slds-size_1-of-5"><span></span></div>
         
         <div class="slds-col slds-size_1-of-5"><span>    
-            <lightning-button variant="destructive-text" label="Destructive Text" title="Destructive action with a lighter look" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button variant="destructive-text" label="Clear" title="Clear Action to remove selections" onclick={handleClear} class="slds-m-left_x-small"></lightning-button>
         </span></div>
 
         <div class="slds-col slds-size_1-of-5"><span>
-            <lightning-button variant="brand" label="Brand" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button variant="brand" label="Update" title="Update records" onclick={handleUpdate} class="slds-m-left_x-small"></lightning-button>
 
         </span></div>
         </div>
