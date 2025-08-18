@@ -8,8 +8,9 @@
         </template>
         
         <template lwc:else>
+        
             <div class="slds-grid slds-gutters">
-                <div class="slds-col slds-size_1-of-5"><span>
+                <div class="slds-col slds-size_1-of-3"><span>
                     <lightning-combobox
                     name="Object"
                     label="Object"
@@ -19,36 +20,61 @@
                     onchange={handleChangeObject}
                     required>
                 </lightning-combobox>
+              
+                <template lwc:if={selectedObject}>
+
+                    <lightning-dual-listbox 
+                    name="Fields"
+                    source-label="Fields"
+                    options={objectFieldsOptions}
+                    selected-label="Selected"
+                    min={min}
+                    max={max}
+                    onchange={handleChangeFields}
+                    value={selectedFields}>
+                    
+                </lightning-dual-listbox>
+            
+            </template>
+
             </span></div>
             
-            <div class="slds-col slds-size_1-of-5"><span>
-                <lightning-combobox
-                name="Fields"
-                label="Fields"
-                value={selectedField}
-                placeholder="Select Fields"
-                options={objectFieldsOptions}
-                onchange={handleSelectFields}
-                required>
-            </lightning-combobox>
-            
+            <div class="slds-col slds-size_1-of-3"><span>
+                           
         </span></div>
         
-        <div class="slds-col slds-size_1-of-5"><span></span></div>
-        
-        <div class="slds-col slds-size_1-of-5"><span>    
+         
+        <div class="slds-col slds-size_1-of-3"><span>    
             <lightning-button variant="destructive-text" label="Clear" title="Clear Action to remove selections" onclick={handleClear} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button variant="brand" label="Update" disabled={isUpdateDisabled} title="Update records" onclick={handleUpdate} class="slds-m-left_x-small"></lightning-button>
+
         </span></div>
         
-        <div class="slds-col slds-size_1-of-5"><span>
-            <lightning-button variant="brand" label="Update" disabled={isUpdateDisabled} title="Update records" onclick={handleUpdate} class="slds-m-left_x-small"></lightning-button>
-            
-        </span></div>
-    </div>
+             
+     </div>
     
-</template>
+    <div>
+     <span>
+         {selectedFields}
+
+     </span>
+    </div>
+
+    <!-- ** DataTable -->
+
+        <lightning-datatable
+                    key-field="id"
+                    data={records}
+                    show-row-number-column
+                    row-number-offset={rowOffset}
+                    suppress-bottom-bar
+                    draft-values={draftValues}
+                    columns={columns}>
+        </lightning-datatable>
+
+        </template>
 
 
-</lightning-card>
+    </lightning-card>
 
 </template>
