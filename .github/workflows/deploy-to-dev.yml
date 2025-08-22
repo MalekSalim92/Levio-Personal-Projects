@@ -3,32 +3,27 @@ name: Deploy to DevOrg1
 on:
   push:
     branches:
-      - main   # or the branch you want to trigger the deploy from
+      - recordUpdater
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout the repo
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      # Step 2: Install Salesforce CLI (modern sf CLI)
       - name: Install Salesforce CLI
-        uses: salesforcecli/setup-sf@v2
+        run: npm install @salesforce/cli --global
 
-      # Step 3: Authenticate to your DevOrg1 using JWT
-      - name: Authenticate to DevOrg1
-        run: sf auth:jwt:grant \
-              --client-id ${{ secrets.SF_CLIENT_ID }} \
-              --jwt-key-file assets/server.key \
-              --username ${{ secrets.SF_USERNAME }} \
-              --set-default-dev-hub
+      - name: Authenticate to Salesforce
+        run: |
+          sf login org:dev \
+          --client-id ${{ secrets.SF_CLIENT_ID }} \
+          --client-secret ${{ secrets.SF_CLIENT_SECRET }} \
+          --username ${{ secrets.SF_USERNAME }} \
+          --set-default-dev-hub \
+          --set-default-username \
+          --instance-url ${{ secrets.SF_LOGIN_URL }} \
+          --refresh-token ${{ secrets.SF_REFRESH_TOKEN }}
 
-      # Step 4: Deploy your Shopify package
-      - name: Deploy Shopify package to DevOrg1
-        run: sf project deploy start \
-              --manifest manifest/shopifyPackage.xml \
-              -u DevOrg1 \
-              --verbose
+      - name: Deploy RecordUpdater Package to DevOrg1
+        run: sf project deploy start --manifest manifest/recordUpdaterPackage.xml --target-org DevOrg1
