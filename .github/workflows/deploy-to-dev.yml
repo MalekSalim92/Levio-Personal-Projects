@@ -3,36 +3,32 @@ name: Deploy to DevOrg1
 on:
   push:
     branches:
-      - main      # or the branch you want to trigger deployments from
+      - main   # or the branch you want to trigger the deploy from
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # Step 1: Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      # Step 2: Install Salesforce CLI (modern sf CLI)
+      - name: Install Salesforce CLI
+        uses: salesforcecli/setup-sf@v2
 
-    - name: Install Salesforce CLI
-      run: |
-        npm install sfdx-cli --global
-        sf --version
+      # Step 3: Authenticate to your DevOrg1 using JWT
+      - name: Authenticate to DevOrg1
+        run: sf auth:jwt:grant \
+              --client-id ${{ secrets.SF_CLIENT_ID }} \
+              --jwt-key-file assets/server.key \
+              --username ${{ secrets.SF_USERNAME }} \
+              --set-default-dev-hub
 
-    - name: Authenticate to DevOrg1
-      env:
-        SF_AUTH_URL: ${{ secrets.DEV_AUTH_URL }}
-      run: |
-        echo "$SF_AUTH_URL" | sf auth web login --set-default-org --verbose
-
-    - name: Deploy to DevOrg1
-      run: |
-        sf project deploy start --target-org DevOrg1 --verbose --path force-app
-
-    - name: Verify deployment
-      run: |
-        sf project deploy report --target-org DevOrg1 --verbose
+      # Step 4: Deploy your Shopify package
+      - name: Deploy Shopify package to DevOrg1
+        run: sf project deploy start \
+              --manifest manifest/shopifyPackage.xml \
+              -u DevOrg1 \
+              --verbose
