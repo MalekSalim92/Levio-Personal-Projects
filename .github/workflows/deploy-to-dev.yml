@@ -1,0 +1,38 @@
+name: Deploy to DevOrg1
+
+on:
+  push:
+    branches:
+      - main      # or the branch you want to trigger deployments from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install Salesforce CLI
+      run: |
+        npm install sfdx-cli --global
+        sf --version
+
+    - name: Authenticate to DevOrg1
+      env:
+        SF_AUTH_URL: ${{ secrets.DEV_AUTH_URL }}
+      run: |
+        echo "$SF_AUTH_URL" | sf auth web login --set-default-org --verbose
+
+    - name: Deploy to DevOrg1
+      run: |
+        sf project deploy start --target-org DevOrg1 --verbose --path force-app
+
+    - name: Verify deployment
+      run: |
+        sf project deploy report --target-org DevOrg1 --verbose
