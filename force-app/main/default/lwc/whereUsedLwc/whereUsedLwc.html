@@ -1,0 +1,18 @@
+<template>
+ 
+    <lightning-combobox
+            name="metadata"
+            label="Metadata"
+            value={selectedMetadata}
+            placeholder="Select Metadata"
+            options={metadataOptions}
+            onchange={handleSelectMetadata} >
+    </lightning-combobox>
+
+
+    <lightning-datatable
+    key-field="id"
+    data={metadataItems}
+    columns={metadataColumns}>
+</lightning-datatable>
+</template>
