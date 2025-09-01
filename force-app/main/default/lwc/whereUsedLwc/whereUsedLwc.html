@@ -1,30 +1,116 @@
 <template>
-
     <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <lightning-vertical-navigation onselect={handleSelectMetadata}>
+                <lightning-vertical-navigation-section>
+                    <template for:each={metadataOptions} for:item="option">
+                        <lightning-vertical-navigation-item-icon
+                            key={option.value}
+                            label={option.label}
+                            name={option.value}
+                            icon-name={option.icon}>
+                        </lightning-vertical-navigation-item-icon>
+                    </template>
+                </lightning-vertical-navigation-section>
+            </lightning-vertical-navigation>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Search Bar -->
+            <div class="search-container">
+                <lightning-input 
+                    type="search"
+                    label="Search Metadata"
+                    placeholder="Type to search..."
+                    value={searchTerm}
+                    onchange={handleSearch}>
+                </lightning-input>
+            </div>
 
-    <div class="sidebar">
-     
-        <lightning-vertical-navigation onselect={handleSelectMetadata}>
-            <lightning-vertical-navigation-section >
-                <template for:each={metadataOptions} for:item="option">
-                <lightning-vertical-navigation-item-icon
-                    key = {option.value}
-                    label={option.label}
-                    name={option.value}
-                    icon-name={option.icon}>
-                </lightning-vertical-navigation-item-icon>
-                 </template>
+            <!-- Results Table -->
+            <div class="table-container">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
 
-            </lightning-vertical-navigation-section>
-           
-        </lightning-vertical-navigation>
-    </div>
-    <div class="main-content">        
-        <lightning-datatable
-        key-field="id"
-        data={metadataItems.data}
-        columns={metadataColumns}>
-    </lightning-datatable>
-    </div>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={displayedItems} for:item="item">
+                            <tr key={item.id} 
+                                data-id={item.id} 
+                                onclick={handleClick}
+                                class="slds-hint-parent clickable-row">
+                                <td scope="row" data-label="Name">
+                                         {item.developerName}
+                                 </td>
+                               
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- No Results Message -->
+            <template if:true={showNoResults}>
+                <div class="slds-text-align_center slds-m-vertical_large">
+                    <div class="slds-illustration slds-illustration_large">
+                        <lightning-icon icon-name="utility:search" size="large" alternative-text="No results"></lightning-icon>
+                        <h3 class="slds-text-heading_medium">No results found</h3>
+                        <p class="slds-text-body_regular">
+                            Try adjusting your search term or selecting a different metadata type.
+                        </p>
+                    </div>
+                </div>
+            </template>
+
+            <!-- No Data Message -->
+            <template if:true={showNoData}>
+                <div class="slds-text-align_center slds-m-vertical_large">
+                    <div class="slds-illustration slds-illustration_large">
+                        <lightning-icon icon-name="utility:info" size="large" alternative-text="No data"></lightning-icon>
+                        <h3 class="slds-text-heading_medium">No metadata found</h3>
+                        <p class="slds-text-body_regular">
+                            There are no {selectedMetadata} items in your org.
+                        </p>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Pagination -->
+            <template if:true={showPagination}>
+                <div class="pagination slds-text-align_center slds-m-vertical_medium">
+                    <div class="slds-button-group" role="group">
+                        <lightning-button 
+                            label="Previous" 
+                            onclick={handlePrevPage}
+                            disabled={disablePrevious}
+                            variant="neutral"
+                            class="slds-m-right_x-small">
+                        </lightning-button>
+                        
+                        <span class="page-info slds-m-horizontal_medium slds-text-body_regular">
+                            Page {currentPage} of {totalPages}
+                        </span>
+                        
+                        <lightning-button 
+                            label="Next" 
+                            onclick={handleNextPage}
+                            disabled={disableNext}
+                            variant="neutral"
+                            class="slds-m-left_x-small">
+                        </lightning-button>
+                    </div>
+                    
+                    <div class="slds-text-body_small slds-text-color_weak slds-m-top_small">
+                     </div>
+                </div>
+            </template>
+        </div>
     </div>
 </template>

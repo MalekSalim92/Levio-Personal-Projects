@@ -66,18 +66,6 @@ public with sharing class WhereUsedMetadataService {
 
 }
 
-
-    // Wrapper class for metadata items
-    public class MetadataItem {
-        @AuraEnabled public String id { get; set; }
-        @AuraEnabled public String developerName { get; set; }
-         
-        public MetadataItem(String id, String developerName) {
-            this.id = id;
-            this.developerName = developerName;
-         }
-    }
-
     // tooling api 
 
     private static List<Object> toolingApiCall(String toolingQuery) {
@@ -109,6 +97,66 @@ public with sharing class WhereUsedMetadataService {
 
 
 
+@AuraEnabled (cacheable=true)
+public static List<metadataDependecy> getDependencies(String metadataType){
+    List<metadataDependecy> dependencyList = new List<metadataDependecy>();
+    String toolingQuery  =      'SELECT MetadataComponentId, MetadataComponentName, MetadataComponentType, ' +
+                                'RefMetadataComponentId, RefMetadataComponentName, RefMetadataComponentType ' +
+                                'FROM MetadataComponentDependency ' +
+                                'WHERE RefMetadataComponentType = \'' + metadataType + '\'';
+                              List<Object> records = toolingApiCall(toolingQuery);
+                              for (Object o : records) {
+                                  Map<String, Object> r = (Map<String, Object>) o;
+                                  dependencyList.add(new metadataDependecy(
+                                      (String) r.get('MetadataComponentId'),
+                                      (String) r.get('MetadataComponentName'),
+                                      (String) r.get('MetadataComponentType'),
+                                      (String) r.get('RefMetadataComponentId'),
+                                      (String) r.get('RefMetadataComponentName'),
+                                      (String) r.get('RefMetadataComponentType')
+                                  ));
+                               
+                          }
+                          return dependencyList;
+                      
+                      }
+                      
+
+ 
+ // Wrapper class for metadata dependencies
+ public class metadataDependecy{
+    @AuraEnabled public String id { get; set; }
+    @AuraEnabled public String name { get; set; }
+    @AuraEnabled public String type { get; set; }
+    @AuraEnabled public String refId { get; set; }
+    @AuraEnabled public String refName { get; set; }
+    @AuraEnabled public String refType { get; set; }
+     
+    public metadataDependecy(String id, String name, String type, String refId, String refName, String refType) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.refId = refId;
+        this.refName = refName;
+        this.refType = refType;
+     }
+}
+
+
+ // Wrapper class for metadata items
+ public class MetadataItem {
+    @AuraEnabled public String id { get; set; }
+    @AuraEnabled public String developerName { get; set; }
+     
+    public MetadataItem(String id, String developerName) {
+        this.id = id;
+        this.developerName = developerName;
+     }
+}
+
+
+
+
 private static final Set<String> ALLOWED_METADATA_TYPES = new Set<String>{
     'ApexClass',
     'ApexTrigger',
@@ -119,7 +167,3 @@ private static final Set<String> ALLOWED_METADATA_TYPES = new Set<String>{
 };
 
 }
-// SELECT MetadataComponentId, MetadataComponentName, MetadataComponentType,
-//        RefMetadataComponentId, RefMetadataComponentName, RefMetadataComponentType
-// FROM MetadataComponentDependency
-// WHERE MetadataComponentType = 'LightningComponentBundle'
