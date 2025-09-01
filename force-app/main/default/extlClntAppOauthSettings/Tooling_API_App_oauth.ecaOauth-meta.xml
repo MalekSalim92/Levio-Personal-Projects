@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtlClntAppOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <commaSeparatedOauthScopes>Full</commaSeparatedOauthScopes>
+    <externalClientApplication>Tooling_API_App</externalClientApplication>
+    <isFirstPartyAppEnabled>false</isFirstPartyAppEnabled>
+    <label>Tooling_API_App_oauth</label>
+    <oauthLink>00Dak00000MIU7r:888ak000000WIbJ</oauthLink>
+</ExtlClntAppOauthSettings>

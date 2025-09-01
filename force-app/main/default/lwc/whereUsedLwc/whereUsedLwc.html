@@ -1,18 +1,30 @@
 <template>
- 
-    <lightning-combobox
-            name="metadata"
-            label="Metadata"
-            value={selectedMetadata}
-            placeholder="Select Metadata"
-            options={metadataOptions}
-            onchange={handleSelectMetadata} >
-    </lightning-combobox>
 
+    <div class="container">
 
-    <lightning-datatable
-    key-field="id"
-    data={metadataItems}
-    columns={metadataColumns}>
-</lightning-datatable>
+    <div class="sidebar">
+     
+        <lightning-vertical-navigation onselect={handleSelectMetadata}>
+            <lightning-vertical-navigation-section >
+                <template for:each={metadataOptions} for:item="option">
+                <lightning-vertical-navigation-item-icon
+                    key = {option.value}
+                    label={option.label}
+                    name={option.value}
+                    icon-name={option.icon}>
+                </lightning-vertical-navigation-item-icon>
+                 </template>
+
+            </lightning-vertical-navigation-section>
+           
+        </lightning-vertical-navigation>
+    </div>
+    <div class="main-content">        
+        <lightning-datatable
+        key-field="id"
+        data={metadataItems.data}
+        columns={metadataColumns}>
+    </lightning-datatable>
+    </div>
+    </div>
 </template>
