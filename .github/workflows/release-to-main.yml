@@ -22,7 +22,7 @@ jobs:
 
       # Authenticate with GitHub CLI using the default token
       - name: Authenticate GitHub CLI
-        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+        run: gh auth login --with-token <<< "${{ secrets.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 }}"
 
       # Create PR from release to main
       - name: Create PR from release to main
