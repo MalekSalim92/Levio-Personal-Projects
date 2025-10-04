@@ -10,9 +10,9 @@ export default class WhereUsedLwc extends LightningElement {
     currentPage = 1;
     pageSize = 10;
     totalItems = 0;
-
-
-    metadataOptions = [
+    clickedId
+    dependencies = []
+    metadataOptions = [ 
         { label: "Custom Object", value: "CustomObject", icon: "utility:open_folder" },
         { label: "Custom Field", value: "CustomField", icon: "utility:file" },
         { label: "Flow", value: "FlowDefinition", icon: "utility:flow" },
@@ -58,15 +58,24 @@ export default class WhereUsedLwc extends LightningElement {
     async getMetadataDependency(){
 
         const metadataDependency = await getDependencies({ metadataType : this.selectedMetadata})
-
         console.log('metadata dependency : ',metadataDependency);
+        console.log('clickedId:', this.clickedId, 'type:', typeof this.clickedId);
+        console.log('refId from data:', metadataDependency[0].refId, 'type:', typeof metadataDependency[0].refId);
+
+        this.dependencies = metadataDependency.filter(item => item.refId == String(this.clickedId));
+        console.log('metadata dependency 0: ',this.dependencies[0]);
+
+       this.dependencies.forEach(item => {
+            console.log(item.name, item.type);
+        });
+                                
     }
 
     handleClick(event) {
-        const clickedId = event.currentTarget.dataset.id;
-        console.log('Clicked row ID:', clickedId);
+        this.clickedId = event.currentTarget.dataset.id;
+        console.log('Clicked row ID:', this.clickedId);
 
-        const clickedItem = this.metadataItems.find(item => item.id === clickedId);
+        const clickedItem = this.metadataItems.find(item => item.id === this.clickedId);
         console.log('Clicked metadata item:', clickedItem);
         this.getMetadataDependency();
         // You can dispatch a custom event or navigate here

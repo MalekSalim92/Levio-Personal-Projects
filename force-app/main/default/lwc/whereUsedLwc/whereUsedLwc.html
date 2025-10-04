@@ -29,13 +29,16 @@
                 </lightning-input>
             </div>
 
-            <!-- Results Table -->
+            <!-- Metadata Table List -->
             <div class="table-container">
-                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped clickableTable">
                     <thead>
                         <tr class="slds-line-height_reset">
                             <th class="slds-text-title_caps" scope="col">
                                 <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Link"></div>
                             </th>
 
                         </tr>
@@ -49,7 +52,11 @@
                                 <td scope="row" data-label="Name">
                                          {item.developerName}
                                  </td>
-                               
+                                     <td scope="row" data-label="link">
+                                        <lightning-button-icon icon-name="utility:new_window"   alternative-text="Open metadata" variant="brand" class="slds-m-left_xx-small"></lightning-button-icon>
+   
+                                     </td>
+                                
                             </tr>
                         </template>
                     </tbody>
@@ -111,6 +118,48 @@
                      </div>
                 </div>
             </template>
+
+
+            <!-- Depencies Table -->
+
+            <div class="table-container">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Type">Type</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="link"></div>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={dependencies} for:item="item">
+                            <tr key={item.name} 
+                                data-id={item.name} 
+                                class="slds-hint-parent">
+                                <td scope="row" data-label="Name">
+                                         {item.name}
+                                 </td>
+                                 <td scope="row" data-label="Type">
+                                    <lightning-badge label={item.type} icon-name="standard:event"></lightning-badge>
+                                    
+                                  </td>
+                                 <td scope="row" data-label="link">
+                                     <lightning-button-icon icon-name="utility:new_window"   alternative-text="Open metadata" variant="brand" class="slds-m-left_xx-small"></lightning-button-icon>
+
+                                  </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </template>

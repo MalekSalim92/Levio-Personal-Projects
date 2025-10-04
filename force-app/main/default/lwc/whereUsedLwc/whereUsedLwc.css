@@ -16,7 +16,7 @@
 
 
 
-table td {
+.clickableTable {
     color: #0070d2; /* make text blue */
     text-decoration: underline;
     cursor: pointer; /* makes pointer a hand */
@@ -57,12 +57,12 @@ table th, table td {
     border-bottom: 1px solid #ddd;
 }
 
-table tr:hover {
+.clickableTable tr:hover {
     background-color: #e8f0fe; /* subtle highlight on hover */
     cursor: pointer;
 }
 
-table td {
+/* table td {
     color: #0070d2;
     text-decoration: underline;
-}
+} */
