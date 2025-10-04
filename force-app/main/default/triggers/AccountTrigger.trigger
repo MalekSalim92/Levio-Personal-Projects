@@ -4,5 +4,5 @@ trigger AccountTrigger on Account (before insert, after insert, before update, a
      if (Trigger.isAfter && Trigger.isInsert) {
         AccountHandler.afterInsert(Trigger.newMap);
     }
-     
+     // test comment 
 }
