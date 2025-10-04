@@ -1,0 +1,35 @@
+name: Auto PR from Release to Main
+
+on:
+  push:
+    branches:
+      - release  # Trigger when release branch gets updated
+
+jobs:
+  auto-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up GitHub CLI
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
+
+      # Authenticate with GitHub CLI using the default token
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+      # Create PR from release to main
+      - name: Create PR from release to main
+        run: |
+          gh pr create \
+            --base main \
+            --head release \
+            --title "Auto PR: Release → Main" \
+            --body "Automatic PR from release to main triggered by a push to release" \
+            --assignee @me || echo "PR may already exist"
