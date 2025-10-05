@@ -1,32 +1,44 @@
-name: Auto PR from Release to Main
+name: Promote Release to Main
 
 on:
-
   push:
     branches:
-      - release  # Trigger when release branch gets updated
+      - release  # Trigger whenever something is pushed to 'release'
+
+permissions:
+  contents: write  # Needed for merging and pushing
+  pull-requests: write
 
 jobs:
-  auto-pr:
+  promote-release:
+    name: Merge release → main
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repo
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for merging full history
 
-    
-
-      # Authenticate with GitHub CLI using the default token
-      - name: Authenticate GitHub CLI
-        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-
-      # Create PR from release to main
-      - name: Create PR from release to main
+      - name: Configure Git user
         run: |
-          gh pr create \
-            --base main \
-            --head release \
-            --title "Auto PR: Release → Main" \
-            --body "Automatic PR from release to main triggered by a push to release" \
-            --assignee @me || echo "PR may already exist"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch branches
+        run: |
+          git fetch origin main
+          git fetch origin release
+
+      - name: Checkout main branch
+        run: git checkout main
+
+      - name: Merge release into main
+        run: |
+          git merge origin/release --no-edit
+
+      - name: Push changes to main
+        run: git push origin main
+
+      - name: Notify success
+        run: echo "✅ Successfully merged 'release' into 'main'"
