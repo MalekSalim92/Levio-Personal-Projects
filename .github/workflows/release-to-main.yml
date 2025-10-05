@@ -1,4 +1,4 @@
-name: Auto PR from Release to Main
+name: Auto Merge Release to Main
 
 on:
   push:
@@ -6,24 +6,34 @@ on:
       - release  # Trigger when release branch gets updated
 
 jobs:
-  auto-pr:
+  auto-merge:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repo
+      # Checkout repository with full history
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: release
 
-      # Authenticate with GitHub CLI using the default token
+      # Authenticate GitHub CLI (optional, only if you want to create PRs)
       - name: Authenticate GitHub CLI
         run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
-      # Create PR from release to main
+      # Merge release into main and push
       - name: Merge release into main
         run: |
+          # Configure git
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+
+          # Fetch main branch and checkout
+          git fetch origin main
           git checkout main
-          git pull origin main
+
+          # Merge release into main
           git merge origin/release --no-ff -m "Auto-merge release → main"
+
+          # Push changes to main
           git push origin main
