@@ -19,11 +19,11 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       # Create PR from release to main
-      - name: Create PR from release to main
+      - name: Merge release into main
         run: |
-          gh pr create \
-            --base main \
-            --head release \
-            --title "Auto PR: Release → Main" \
-            --body "Automatic PR from release to main triggered by a push to release" \
-            --assignee @me || echo "PR may already exist"
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout main
+          git pull origin main
+          git merge origin/release --no-ff -m "Auto-merge release → main"
+          git push origin main
