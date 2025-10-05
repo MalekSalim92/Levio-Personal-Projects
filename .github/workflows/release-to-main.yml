@@ -1,0 +1,40 @@
+name: Auto Merge Release to Main
+
+on:
+  push:
+    branches:
+      - release  # Trigger when release branch gets updated
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Give the workflow permission to push
+    
+    steps:
+      # Checkout repository with full history
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: main  # Checkout main branch
+
+      # Configure git
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Merge release into main and push
+      - name: Merge release into main
+        run: |
+          # Fetch the latest release branch
+          git fetch origin release
+          
+          # Merge release into main
+          git merge origin/release --no-ff -m "Auto-merge release → main"
+          
+          # Push changes to main
+          git push origin main
