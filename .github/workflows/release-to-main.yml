@@ -1,6 +1,7 @@
 name: Auto PR from Release to Main
 
 on:
+
   push:
     branches:
       - release  # Trigger when release branch gets updated
