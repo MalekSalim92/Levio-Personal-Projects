@@ -14,12 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up GitHub CLI
-      - name: Install GitHub CLI
-        run: |
-          sudo apt update
-          sudo apt install gh -y
-
       # Authenticate with GitHub CLI using the default token
       - name: Authenticate GitHub CLI
         run: gh auth login --with-token <<< "${{ secrets.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 }}"
