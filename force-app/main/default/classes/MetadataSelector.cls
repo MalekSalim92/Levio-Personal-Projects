@@ -18,5 +18,5 @@ public with sharing class MetadataSelector {
         return MetadataToolingApi.call(toolingQuery);
     }
 
- // super comment
+ // super comment 
 }
