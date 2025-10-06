@@ -20,19 +20,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Skip all Salesforce steps if no auth is configured
-      # - name: Install Salesforce CLI
-      #   run: |
-      #     npm install @salesforce/cli --global
-      #     sf --version
+       Skip all Salesforce steps if no auth is configured
+       - name: Install Salesforce CLI
+         run: |
+           npm install @salesforce/cli --global
+           sf --version
 
-      # - name: Run Apex Tests
-      #   run: |
-      #     if [ -f test-manifest.txt ]; then
-      #       TEST_CLASSES=$(grep -v '^\s*$' test-manifest.txt | paste -sd, -)
-      #       echo "🎯 Running tests: $TEST_CLASSES"
-      #       # Add your auth + test command here
-      #     fi
+       - name: Run Apex Tests
+         run: |
+           if [ -f test-manifest.txt ]; then
+             TEST_CLASSES=$(grep -v '^\s*$' test-manifest.txt | paste -sd, -)
+             echo "🎯 Running tests: $TEST_CLASSES"
+             # Add your auth + test command here
+           
 
       - name: Configure Git
         run: |
