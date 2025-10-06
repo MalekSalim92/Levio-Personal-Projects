@@ -3,7 +3,7 @@ public with sharing class SObjectSelectorTest {
     @isTest
     public static void testSelector() {
 
-        system.debug('Hellow');
+        system.debug('Hello 22');
 
     }
 }
