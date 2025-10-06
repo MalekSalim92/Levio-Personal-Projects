@@ -28,7 +28,7 @@ jobs:
       - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.SF_AUTH_URL }}" > auth-url.txt
-          sf org login sfdx-url --sfdx-url-file auth-url.txt --set-default --alias targetOrg
+          sf org login sfdx-url --sfdx-url-file auth-url.txt --set-default --alias OrgDEV
           rm auth-url.txt
 
       - name: Run Apex Tests
@@ -36,9 +36,10 @@ jobs:
           if [ -f test-manifest.txt ]; then
             TEST_CLASSES=$(grep -v '^\s*$' test-manifest.txt | paste -sd, -)
             echo "🎯 Running tests: $TEST_CLASSES"
-            sf apex run test --target-org targetOrg --tests "$TEST_CLASSES" --wait 30 --result-format human --output-dir test-results
+            sf apex run test --target-org OrgDEV --tests "$TEST_CLASSES" --wait 30 --result-format human --output-dir test-results
           else
             echo "⚠️ No test-manifest.txt found - skipping tests"
+            exit 1
           fi
 
       - name: Configure Git
